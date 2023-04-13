@@ -1,7 +1,9 @@
 version: "3"
 services:
   data-notebook:
-    image: jupyter/pyspark-notebook:spark-3.3.2
+    #image: jupyter/pyspark-notebook:spark-3.3.2
+    build: .
+    #command: "start.sh jupyter lab --LabApp.token=''"
     command: "start-notebook.sh"
     volumes:
       - ${WORKING_DIR}:/home/jovyan/work
