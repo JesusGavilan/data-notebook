@@ -1,4 +1,4 @@
-ARG SPARK_VERSION=3.3.2
+ARG SPARK_VERSION=3.2.0
 FROM jupyter/pyspark-notebook:spark-${SPARK_VERSION}
 LABEL authors="jesus.gavilan"
 
@@ -12,6 +12,6 @@ RUN apt-get -y update && \
 USER $NB_UID
 RUN curl -Lo coursier https://git.io/coursier-cli
 RUN chmod +x coursier
-RUN ./coursier launch --fork almond:0.13.6 --scala 2.12.15 -- --install --jupyter-path /opt/conda/share/jupyter/kernels/
+RUN ./coursier launch --fork almond:0.13.7 --scala 2.12.15 -- --install --jupyter-path /opt/conda/share/jupyter/kernels/
 RUN pip install delta-spark
 RUN pip install polars
