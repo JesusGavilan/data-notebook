@@ -1,8 +1,12 @@
-ARG SPARK_VERSION=3.2.0
-FROM jupyter/pyspark-notebook:spark-${SPARK_VERSION}
+ARG spark_version=3.2.0
+FROM jupyter/pyspark-notebook:spark-${spark_version}
 LABEL authors="jesus.gavilan"
 
 USER root
+
+ARG almond_version=0.13.7
+ARG scala_version=2.12.15
+
 RUN apt-get -y update && \
     apt-get install --no-install-recommends -y \
       curl \
@@ -10,8 +14,12 @@ RUN apt-get -y update && \
       ca-certificates-java && \
     apt-get clean
 USER $NB_UID
-RUN curl -Lo coursier https://git.io/coursier-cli
-RUN chmod +x coursier
-RUN ./coursier launch --fork almond:0.13.7 --scala 2.12.15 -- --install --jupyter-path /opt/conda/share/jupyter/kernels/
-RUN pip install delta-spark
-RUN pip install polars
+RUN mkdir tools
+WORKDIR tools
+RUN ls
+COPY requirements.txt .
+RUN curl -Lo coursier https://git.io/coursier-cli && \
+    chmod +x coursier
+RUN ./coursier launch --fork "almond:${almond_version}" --scala "${scala_version}" -- --install --jupyter-path /opt/conda/share/jupyter/kernels/
+RUN pip install -r requirements.txt
+WORKDIR "${HOME}"

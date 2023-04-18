@@ -1,0 +1,2 @@
+delta-spark==2.0.1
+polars==0.17.3
